@@ -674,6 +674,41 @@ public class PlayerCharacter
 		return this.isMagic;
 	}
 	
+	public boolean getNoAvoid()
+	{
+		return this.noAvoid;
+	}
+	
+	public boolean getNoMiss()
+	{
+		return this.noMiss;
+	}
+	
+	public boolean getBleedFlag()
+	{
+		return this.bleedFlag;
+	}
+	
+	public boolean getGuardBreakFlag()
+	{
+		return this.guardBreakFlag;
+	}
+	
+	public boolean getBurnFlag()
+	{
+		return this.burnFlag;
+	}
+	
+	public boolean getBoundFlag()
+	{
+		return this.boundFlag;
+	}
+	
+	public boolean getParryFlag()
+	{
+		return this.parryFlag;
+	}
+	
 	public int getPlayerNumber()
 	{
 		return this.playerNumber;
@@ -940,6 +975,11 @@ public class PlayerCharacter
 		}
 		else
 			return 1;
+	}
+	
+	public String writeConsoleInfo(String consoleInfo)
+	{
+		return consoleInfo + "\n";
 	}
 	
 	public enum ClassType
