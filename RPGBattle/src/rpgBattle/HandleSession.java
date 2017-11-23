@@ -1,16 +1,68 @@
-package rpgBattle;
+//package rpgBattle;
 
+import java.io.*;
 import java.net.*;
 
-public class HandleSession 
+
+
+public class HandleSession implements Runnable
 {
 	Socket Player1;
 	Socket Player2;
 	boolean rematch;
+	PlayerCharacter player1Char = new PlayerCharacter();
+	PlayerCharacter player2Char = new PlayerCharacter();
 	
-	private void run()
+	public HandleSession(Socket player1, Socket player2) {
+		
+		this.Player1 = player1;
+		this.Player2 = player2;
+		
+		
+		
+	}
+	
+	public void run()
 	{
-		// TODO
+		try {
+			ObjectInputStream fromPlayer1 = new ObjectInputStream(Player1.getInputStream());
+			ObjectOutputStream toPlayer1 = new ObjectOutputStream(Player1.getOutputStream());
+			
+			ObjectInputStream fromPlayer2 = new ObjectInputStream(Player2.getInputStream());
+			ObjectOutputStream toPlayer2 = new ObjectOutputStream(Player2.getOutputStream());
+			
+			//waiting for each player character object
+			while(true) {			
+				player1Char = (PlayerCharacter) fromPlayer1.readObject();
+				
+				if (player1Char.isInitialized()) {
+					break;
+				}
+			}
+			
+			
+			
+			while(true) {			
+				player2Char = (PlayerCharacter) fromPlayer1.readObject();
+				
+				if (player2Char.isInitialized()) {
+					break;
+				}
+
+			}
+			
+			
+			
+			
+			
+			
+			
+		} catch (IOException ex) {
+			System.err.println(ex);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean isWon()
@@ -18,6 +70,9 @@ public class HandleSession
 		// TODO
 		return false;
 	}
+	
+	
+	//must check if both players are connected i.e. if we have two playercharacter objects filled
 	
 	private boolean isFull()
 	{
@@ -28,20 +83,22 @@ public class HandleSession
 	private void handleTurn(PlayerCharacter player, PlayerCharacter foe)
 	{
 		// TODO
+		
 	}
 	
+	//
 	private void checkConditions(PlayerCharacter player, PlayerCharacter foe)
 	{
-		if (!player.getIsDefending())
+		if (!foe.getIsDefending())
 		{
-			if (foe.getBleedFlag())
-				player.setBleedCounter(3);
-			if (foe.getGuardBreakFlag())
-				player.setGuardBreakCounter(3);
-			if (foe.getBurnFlag())
-				player.setBurnCounter(3);
-			if (foe.getBoundFlag())
-				player.setBoundCounter(2);
+			if (player.getBleedFlag())
+				foe.setBleedCounter(3);
+			if (player.getGuardBreakFlag())
+				foe.setGuardBreakCounter(3);
+			if (player.getBurnFlag())
+				foe.setBurnCounter(3);
+			if (player.getBoundFlag())
+				foe.setBoundCounter(2);
 		}			
 	}
 	
@@ -64,8 +121,5 @@ public class HandleSession
 		return finalDamage;
 	}
 	
-	private void sendMove(PlayerCharacter player, PlayerCharacter foe)
-	{
-		// TODO
-	}
+
 }

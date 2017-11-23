@@ -1,9 +1,10 @@
-package rpgBattle;
+//package rpgBattle;
 
 import java.util.Random;
 
 public class PlayerCharacter
 {
+	private boolean initialized;
 	protected int maxHp;
 	protected int currentHp;
 	protected int maxStamina;
@@ -51,12 +52,17 @@ public class PlayerCharacter
 	private int skill4Cost;
 	private ClassType type;
 	
+	PlayerCharacter() {
+		this.type = ClassType.NoClass;
+	}
+	
 	PlayerCharacter(ClassType type, int playerNumber)
 	{
 		this.playerNumber = playerNumber;
 		switch(type)
 		{
 			case Knight:
+				this.initialized = true;
 				this.type = ClassType.Knight;
 				this.maxHp = 15000;
 				this.maxStamina = 10000;
@@ -85,6 +91,7 @@ public class PlayerCharacter
 				this.skill4Cost = 3000;
 				break;
 			case Mage:
+				this.initialized = true;
 				this.type = ClassType.Mage;
 				this.maxHp = 8000;
 				this.maxStamina = 20000;
@@ -113,6 +120,7 @@ public class PlayerCharacter
 				this.skill4Cost = 6000;
 				break;
 			case Archer:
+				this.initialized = true;
 				this.type = ClassType.Archer;
 				this.maxHp = 12000;
 				this.maxStamina = 15000;
@@ -141,6 +149,7 @@ public class PlayerCharacter
 				this.skill4Cost = 3000;
 				break;
 			default:
+				this.initialized = false;
 				this.type = ClassType.NoClass;
 				this.maxHp = 10000;
 				this.maxStamina = 10000;
@@ -174,6 +183,7 @@ public class PlayerCharacter
 	/**
 	 * Resets boolean flags at the start of turn
 	 * and clears consoleInfo. 
+	 *tells server whether or not to inflict status on other player
 	 */
 	public void initializeTurn()
 	{
@@ -204,20 +214,21 @@ public class PlayerCharacter
 		// Do damage over time status effect damage
 		if (getBurnCounter() != 0)
 		{
-			int damage = getCurrentHp();
-			setCurrentHp(getMaxHp() * (1/10));
-			damage = damage - getCurrentHp();
+			
+			int burn_damage = (getMaxHp() * (1/10));
+			setCurrentHp(burn_damage);
+			
 			consoleInfo += "Player " + getPlayerNumber() + 
-					" takes " + damage + 
+					" takes " + burn_damage + 
 					" point(s) of damage from their burn.\n";
 		}
 		if (getBleedCounter() != 0)
 		{
-			int damage = getCurrentHp();
-			setCurrentHp(getMaxHp() * (1/10));
-			damage = damage - getCurrentHp();
+			int bleed_damage = (getMaxHp() * (1/10));
+			setCurrentHp(bleed_damage);
+			
 			consoleInfo += "Player " + getPlayerNumber() + 
-					" takes " + damage + 
+					" takes " + bleed_damage + 
 					" point(s) of damage from bleeding.\n";
 		}
 		
@@ -712,6 +723,14 @@ public class PlayerCharacter
 	public int getPlayerNumber()
 	{
 		return this.playerNumber;
+	}
+	
+	public ClassType getClassType() {
+		return this.type;
+	}
+	
+	public boolean isInitialized() {
+		return this.initialized;
 	}
 	
 	/**
