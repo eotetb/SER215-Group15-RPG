@@ -683,6 +683,31 @@ public class PlayerCharacter
 		return this.isDefending;
 	}
 	
+	public boolean getIsAttacking()
+	{
+		return this.isAttacking;
+	}
+	
+	public boolean getUsingSkill1()
+	{
+		return this.isUsingSkill1;
+	}
+	
+	public boolean getUsingSkill2()
+	{
+		return this.isUsingSkill2;
+	}
+	
+	public boolean getUsingSkill3()
+	{
+		return this.isUsingSkill3;
+	}
+	
+	public boolean getUsingSkill4()
+	{
+		return this.isUsingSkill4;
+	}
+	
 	public boolean getIsPhysical()
 	{
 		return this.isPhysical;
