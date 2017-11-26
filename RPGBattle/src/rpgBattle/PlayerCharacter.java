@@ -26,7 +26,15 @@ public class PlayerCharacter
 	private int berserkStack = 0;
 	private int guardBreakStack = 0;
 	private boolean isCritical = false;
+	//added as flags
 	private boolean isDefending = false;
+	private boolean isAttacking = false;
+	private boolean isUsingSkill1 = false;
+	private boolean isUsingSkill2 = false;
+	private boolean isUsingSkill3 = false;
+	private boolean isUsingSkill4 = false;
+	
+	
 	private boolean isPhysical = false;
 	private boolean isMagic = false;
 	private boolean noAvoid = false;
