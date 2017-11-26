@@ -26,15 +26,15 @@ public class PlayerCharacter
 	private int berserkStack = 0;
 	private int guardBreakStack = 0;
 	private boolean isCritical = false;
-	//added as flags
+	//added as client action flags
 	private boolean isDefending = false;
 	private boolean isAttacking = false;
 	private boolean isUsingSkill1 = false;
 	private boolean isUsingSkill2 = false;
 	private boolean isUsingSkill3 = false;
 	private boolean isUsingSkill4 = false;
-	
-	
+	private boolean opponentDefeated = false;
+	private boolean isDraw = false;
 	private boolean isPhysical = false;
 	private boolean isMagic = false;
 	private boolean noAvoid = false;
@@ -709,6 +709,14 @@ public class PlayerCharacter
 		return this.isUsingSkill4;
 	}
 	
+	public boolean getOpponentDefeated() {
+		return this.opponentDefeated;
+	}
+	
+	public boolean getIsDraw() {
+		return this.isDraw;
+	}
+	
 	//setter methods for client flags
 	public void setIsAttacking(boolean x) {
 		isAttacking = x;
@@ -728,6 +736,12 @@ public class PlayerCharacter
 	}
 	public void setIsUsingSkill4(boolean x) {
 		isUsingSkill4 = x;
+	}
+	public void setOpponentDefeated(boolean x) {
+		opponentDefeated = x;
+	}
+	public void setIsDraw(boolean x) {
+		isDraw = x;
 	}
 	
 	public boolean getIsPhysical()
