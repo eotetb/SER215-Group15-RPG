@@ -678,6 +678,7 @@ public class PlayerCharacter
 		return this.isCritical;
 	}
 	
+	//getter methods for client flags
 	public boolean getIsDefending()
 	{
 		return this.isDefending;
@@ -706,6 +707,27 @@ public class PlayerCharacter
 	public boolean getUsingSkill4()
 	{
 		return this.isUsingSkill4;
+	}
+	
+	//setter methods for client flags
+	public void setIsAttacking(boolean x) {
+		isAttacking = x;
+	}
+	public void setIsDefending(boolean x) {
+		isDefending= x;
+	}
+	public void setIsUsingSkill1(boolean x) {
+		isUsingSkill1 = x;
+	}
+	
+	public void setIsUsingSkill2(boolean x) {
+		isUsingSkill2 = x;
+	}
+	public void setIsUsingSkill3(boolean x) {
+		isUsingSkill3 = x;
+	}
+	public void setIsUsingSkill4(boolean x) {
+		isUsingSkill4 = x;
 	}
 	
 	public boolean getIsPhysical()
