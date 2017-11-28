@@ -84,6 +84,7 @@ public class PlayerCharacter
 	private ClassType type;
 	
 	//win conditions
+	private boolean youAreDefeated = false;
 	private boolean opponentDefeated = false;
 	private boolean isDraw = false;
 	
@@ -738,6 +739,10 @@ public class PlayerCharacter
 		return this.isUsingSkill4;
 	}
 	
+	public boolean getYouAreDefeated() {
+		return this.youAreDefeated;
+	}
+	
 	public boolean getOpponentDefeated() {
 		return this.opponentDefeated;
 	}
@@ -807,6 +812,9 @@ public class PlayerCharacter
 	}
 	public void setIsUsingSkill4(boolean x) {
 		isUsingSkill4 = x;
+	}
+	public void setYouAreDefeated(boolean x) {
+		youAreDefeated = x;
 	}
 	public void setOpponentDefeated(boolean x) {
 		opponentDefeated = x;
