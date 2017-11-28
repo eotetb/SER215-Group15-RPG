@@ -3,6 +3,10 @@ import java.net.*;
 
 public class RPGServer {
 	
+	public static void main (String args[]) {
+		new RPGServer();
+	}
+	
 	public RPGServer() {
 		
 		try {
