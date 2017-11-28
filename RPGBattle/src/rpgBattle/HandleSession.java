@@ -60,7 +60,12 @@ public class HandleSession implements Runnable
 				player2Char.setIsDraw(true);
 			}
 			
-			
+			if (player1Char.getYouAreDefeated()) {
+				player2Char.setOpponentDefeated(true);
+			}
+			if (player2Char.getYouAreDefeated()) {
+				player1Char.setOpponentDefeated(true);
+			}
 			
 			toPlayer1.writeObject(player1Char);
 			toPlayer2.writeObject(player2Char);
