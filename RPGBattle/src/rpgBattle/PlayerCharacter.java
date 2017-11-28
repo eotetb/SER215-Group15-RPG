@@ -15,7 +15,6 @@ public class PlayerCharacter
 	protected int magicDefense;
 	protected double avoid;
 	protected double criticalRate;
-	private int playerNumber;
 	private int bleedCounter = 0;
 	private int berserkCounter = 0;
 	private int guardBreakCounter = 0;
@@ -64,9 +63,8 @@ public class PlayerCharacter
 		this.type = ClassType.NoClass;
 	}
 	
-	PlayerCharacter(ClassType type, int playerNumber)
+	PlayerCharacter(ClassType type)
 	{
-		this.playerNumber = playerNumber;
 		switch(type)
 		{
 			case Knight:
