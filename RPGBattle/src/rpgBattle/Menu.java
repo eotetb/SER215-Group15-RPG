@@ -1,7 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
+
 
 import java.awt.EventQueue;
 
@@ -29,8 +26,7 @@ public class Menu extends PlayerCharacter{
 	private ClassType knight = ClassType.Knight;
   
   // IO streams
-  private DataOutputStream toServer;
-  private DataInputStream fromServer;
+ 
   
   
 	/**

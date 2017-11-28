@@ -7,6 +7,11 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -15,6 +20,7 @@ import javax.swing.JMenu;
 import java.awt.FlowLayout;
 import java.awt.CardLayout;
 import java.awt.TextArea;
+import java.awt.TextField;
 import java.awt.Canvas;
 import java.awt.Color;
 import javax.swing.JButton;
@@ -32,7 +38,23 @@ public class Client {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-
+	private ObjectOutputStream toServer;
+	private ObjectInputStream fromServer;
+	  
+	  
+		public void connectToServer(){ 
+			 try{
+			        Socket socket = new Socket("localhost", 8000);
+			        
+			       fromServer = new ObjectInputStream( socket.getInputStream());
+			       toServer =  new ObjectOutputStream(socket.getOutputStream());
+			      }
+			      catch (IOException ex) {
+			     System.err.println(ex);
+			      }
+			 
+		}
+		
 	/**
 	 * Launch the application.
 	 */
@@ -50,6 +72,15 @@ public class Client {
 	}
 	*/
 	
+		
+		/*if (player.getIsDraw()){
+			textField.setText("Is a Draw!!!");
+		}else if(player.getYouAreDefeated()){
+			textField.setText ("You are Defeated!");
+		}else if ( player.getOpponentDefeated()){
+			textField.setText("You are the Winner!!!");
+		}else{} */
+					
 	/**
 	 * Create the application.
 	 */
@@ -161,7 +192,18 @@ public class Client {
 		textField = new JTextField();
 		textField.setBounds(58, 61, 44, 20);
 		frame2.getContentPane().add(textField);
-		textField.setColumns(10);
+		textField.setColumns(10); //bottom left hp
+		
+	/*	try {
+			player = (PlayerCharacter) fromServer.readObject();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
+		textField.setText(String.valueOf(player.getCurrentHp()));
 		
 		JLabel lblHp = new JLabel("HP");
 		lblHp.setBounds(17, 63, 18, 17);
@@ -174,17 +216,20 @@ public class Client {
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
 		textField_1.setBounds(445, 61, 44, 20);
-		frame2.getContentPane().add(textField_1);
+		frame2.getContentPane().add(textField_1); // bottom right hp (dont use yet)
 		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
 		textField_2.setBounds(58, 40, 44, 20);
-		frame2.getContentPane().add(textField_2);
+		frame2.getContentPane().add(textField_2); // top left stamina 
+		int A = 3;
+		String myString = Integer.toString(A);
+		textField_2.setText(myString);
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
 		textField_3.setBounds(445, 40, 44, 20);
-		frame2.getContentPane().add(textField_3);
+		frame2.getContentPane().add(textField_3); //top right stamina 
 		
 		JLabel lblStam = new JLabel("STAM");
 		lblStam.setBounds(8, 42, 40, 17);
@@ -193,7 +238,9 @@ public class Client {
 		JLabel label_2 = new JLabel("STAM");
 		label_2.setBounds(394, 43, 41, 17);
 		frame2.getContentPane().add(label_2);
+	
 	}
+
 
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
@@ -213,3 +260,5 @@ public class Client {
 		});
 	}
 }
+
+
