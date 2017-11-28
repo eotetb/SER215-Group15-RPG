@@ -4,7 +4,10 @@ import java.util.Random;
 
 public class PlayerCharacter
 {
+	//true if character is initialized
 	private boolean initialized;
+	
+	//stats
 	protected int maxHp;
 	protected int currentHp;
 	protected int maxStamina;
@@ -13,8 +16,16 @@ public class PlayerCharacter
 	protected int defense;
 	protected int magicDamage;
 	protected int magicDefense;
+	
+	//critical rates and avoid rate
 	protected double avoid;
 	protected double criticalRate;
+	private boolean isCritical = false;
+	
+	//player number
+	private int playerNumber;
+	
+	//counters for status effects
 	private int bleedCounter = 0;
 	private int berserkCounter = 0;
 	private int guardBreakCounter = 0;
@@ -22,9 +33,15 @@ public class PlayerCharacter
 	private int magicShellCounter = 0;
 	private int focusCounter = 0;
 	private int boundCounter = 0;
+	
+	//stack numbers
 	private int berserkStack = 0;
 	private int guardBreakStack = 0;
-	private boolean isCritical = false;
+	
+	//used in defend() method
+	private boolean defending = false;
+	
+	
 	//added as client action flags
 	private boolean isDefending = false;
 	private boolean isAttacking = false;
@@ -32,18 +49,23 @@ public class PlayerCharacter
 	private boolean isUsingSkill2 = false;
 	private boolean isUsingSkill3 = false;
 	private boolean isUsingSkill4 = false;
-	private boolean opponentDefeated = false;
-	private boolean isDraw = false;
+	
+	
+	//damage types
 	private boolean isPhysical = false;
 	private boolean isMagic = false;
 	private boolean noAvoid = false;
 	private boolean noMiss = false;
+	
+	//whether or not status effect is active on player
 	private boolean bleedFlag = false;
 	private boolean guardBreakFlag = false;
 	private boolean burnFlag = false;
 	private boolean boundFlag = false;
 	private boolean parryFlag = false;
 	private boolean skillSuccess = false;
+	
+	//skill info
 	private String consoleInfo = "";
 	private String skill1Name = "";
 	private String skill1Desc = "";
@@ -57,7 +79,15 @@ public class PlayerCharacter
 	private int skill2Cost;
 	private int skill3Cost;
 	private int skill4Cost;
+	
+	//enum for class type
 	private ClassType type;
+	
+	//win conditions
+	private boolean opponentDefeated = false;
+	private boolean isDraw = false;
+	
+	
 	
 	PlayerCharacter() {
 		this.type = ClassType.NoClass;
@@ -65,6 +95,7 @@ public class PlayerCharacter
 	
 	PlayerCharacter(ClassType type)
 	{
+		this.playerNumber = playerNumber;
 		switch(type)
 		{
 			case Knight:
@@ -222,7 +253,7 @@ public class PlayerCharacter
 		{
 			
 			int burn_damage = (getMaxHp() * (1/10));
-			setCurrentHp(burn_damage);
+			subtractHp(burn_damage);
 			
 			consoleInfo += "Player " + getPlayerNumber() + 
 					" takes " + burn_damage + 
@@ -231,7 +262,7 @@ public class PlayerCharacter
 		if (getBleedCounter() != 0)
 		{
 			int bleed_damage = (getMaxHp() * (1/10));
-			setCurrentHp(bleed_damage);
+			subtractHp(bleed_damage);
 			
 			consoleInfo += "Player " + getPlayerNumber() + 
 					" takes " + bleed_damage + 
@@ -301,7 +332,7 @@ public class PlayerCharacter
 		}
 		else
 		{
-			this.isDefending = true;
+			this.defending = true;
 			setCurrentStamina(-(getMaxStamina() * (1/5)));
 		}
 		
@@ -349,7 +380,7 @@ public class PlayerCharacter
 				this.parryFlag = true;
 				break;
 			case Mage:
-				setCurrentHp(-(getMaxHp() * (1/2)));
+				subtractHp(-(getMaxHp() * (1/2)));
 				break;
 			case Archer:
 				setFocusCounter(6);
@@ -420,8 +451,9 @@ public class PlayerCharacter
 					this.burnFlag = true;
 				break;
 			case Archer:
-				if (chance(70))
-					this.boundFlag = true;
+				damage = getStrength() * 3;
+				this.isPhysical = true;
+				this.noMiss = true;
 				break;
 			default:
 				damage = getStrength();
@@ -483,9 +515,8 @@ public class PlayerCharacter
 				setMagicShellCounter(4);
 				break;
 			case Archer:
-				damage = getStrength() * 3;
-				this.isPhysical = true;
-				this.noMiss = true;
+				if (chance(70))
+					this.boundFlag = true;
 				break;
 			default:
 				damage = getStrength();
@@ -716,45 +747,46 @@ public class PlayerCharacter
 	}
 	
 	//getter methods for skill strings
-	public String getSkill1Name()
-	{
-		return this.skill1Name
-	}
-	
-	public String getSkill2Name()
-	{
-		return this.skill2Name
-	}
-	
-	public String getSkill3Name()
-	{
-		return this.skill3Name
-	}
-	
-	public String getSkill4Name()
-	{
-		return this.skill4Name
-	}
-	
-	public String getSkill1Desc()
-	{
-		return this.skill1Desc
-	}
-	
-	public String getSkill2Desc()
-	{
-		return this.skill2Desc
-	}
-	
-	public String getSkill3Desc()
-	{
-		return this.skill3Desc
-	}
-	
-	public String getSkill4Desc()
-	{
-		return this.skill4Desc
-	}
+		public String getSkill1Name()
+		{
+			return this.skill1Name;
+		}
+		
+		public String getSkill2Name()
+		{
+			return this.skill2Name;
+		}
+		
+		public String getSkill3Name()
+		{
+			return this.skill3Name;
+		}
+		
+		public String getSkill4Name()
+		{
+			return this.skill4Name;
+		}
+		
+		
+		public String getSkill1Desc()
+		{
+			return this.skill1Desc;
+		}
+		
+		public String getSkill2Desc()
+		{
+			return this.skill2Desc;
+		}
+		
+		public String getSkill3Desc()
+		{
+			return this.skill3Desc;
+		}
+		
+		public String getSkill4Desc()
+		{
+			return this.skill4Desc;
+		}
 	
 	//setter methods for client flags
 	public void setIsAttacking(boolean x) {
@@ -847,7 +879,7 @@ public class PlayerCharacter
 	 * 
 	 * @param hpChange
 	 */
-	public void setCurrentHp(int hpChange)
+	public void subtractHp(int hpChange)
 	{
 		this.currentHp -= hpChange;
 		if (this.currentHp > this.maxHp)
