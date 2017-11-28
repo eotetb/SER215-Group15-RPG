@@ -747,51 +747,46 @@ public class PlayerCharacter
 	}
 	
 	//getter methods for skill strings
-	public String getSkill1Name()
-	{
-		return this.skill1Name;
-	}
-
-	public String getSkill2Name()
-	{
-		return this.skill2Name;
-	}
-
-	public String getSkill3Name()
-	{
-		return this.skill3Name;
-	}
-
-	public String getSkill4Name()
-	{
-		return this.skill4Name;
-	}
-
-
-	public String getSkill1Desc()
-	{
-		return this.skill1Desc;
-	}
-
-	public String getSkill2Desc()
-	{
-		return this.skill2Desc;
-	}
-
-	public String getSkill3Desc()
-	{
-		return this.skill3Desc;
-	}
-
-	public String getSkill4Desc()
-	{
-		return this.skill4Desc;
-	}
-	
-	public ClassType getClassType()
-	{
-		return this.type;	
-	}
+		public String getSkill1Name()
+		{
+			return this.skill1Name;
+		}
+		
+		public String getSkill2Name()
+		{
+			return this.skill2Name;
+		}
+		
+		public String getSkill3Name()
+		{
+			return this.skill3Name;
+		}
+		
+		public String getSkill4Name()
+		{
+			return this.skill4Name;
+		}
+		
+		
+		public String getSkill1Desc()
+		{
+			return this.skill1Desc;
+		}
+		
+		public String getSkill2Desc()
+		{
+			return this.skill2Desc;
+		}
+		
+		public String getSkill3Desc()
+		{
+			return this.skill3Desc;
+		}
+		
+		public String getSkill4Desc()
+		{
+			return this.skill4Desc;
+		}
 	
 	//setter methods for client flags
 	public void setIsAttacking(boolean x) {

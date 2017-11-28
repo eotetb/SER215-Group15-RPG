@@ -3,13 +3,10 @@
 import java.io.*;
 import java.net.*;
 
-
-
 public class HandleSession implements Runnable
 {
 	Socket Player1;
 	Socket Player2;
-	boolean rematch;
 	PlayerCharacter player1Char = new PlayerCharacter();
 	PlayerCharacter player2Char = new PlayerCharacter();
 	
@@ -17,8 +14,6 @@ public class HandleSession implements Runnable
 		
 		this.Player1 = player1;
 		this.Player2 = player2;
-		
-		
 		
 	}
 	
@@ -51,8 +46,17 @@ public class HandleSession implements Runnable
 
 			}
 			
+			player2Char = checkPlayers(player1Char, player2Char);
+			
+			if (player2Char.getCurrentHp() != 0) {
+				player1Char = checkPlayers(player2Char,player1Char);
+			}
 			
 			
+			
+			
+			toPlayer1.writeObject(player1Char);
+			toPlayer2.writeObject(player2Char);
 			
 			
 			
@@ -65,60 +69,89 @@ public class HandleSession implements Runnable
 		}
 	}
 	
-	private boolean isWon()
-	{
-		// TODO
-		return false;
-	}
-	
-	
-	//must check if both players are connected i.e. if we have two playercharacter objects filled
-	
-	private boolean isFull()
-	{
-		// TODO
-		return false;
-	}
-	
-	private void handleTurn(PlayerCharacter player, PlayerCharacter foe)
-	{
-		// TODO
+	public PlayerCharacter checkPlayers(PlayerCharacter player, PlayerCharacter foe) {
 		
-	}
-	
-	//
-	private void checkConditions(PlayerCharacter player, PlayerCharacter foe)
-	{
-		if (!foe.getIsDefending())
-		{
-			if (player.getBleedFlag())
-				foe.setBleedCounter(3);
-			if (player.getGuardBreakFlag())
-				foe.setGuardBreakCounter(3);
-			if (player.getBurnFlag())
-				foe.setBurnCounter(3);
-			if (player.getBoundFlag())
-				foe.setBoundCounter(2);
-		}			
-	}
-	
-	private int calcFinalDamage(PlayerCharacter player, PlayerCharacter foe, int damage)
-	{
-		int finalDamage = damage;
+		if (player.getIsAttacking()) {
+			int damageToFoe = player.attack();
+			
+			if (foe.getMagicShellCounter() != 0) {
+				int reducedDamage = (int) ((.5) * damageToFoe);
+				foe.subtractHp(reducedDamage);
+			} else {
+				foe.subtractHp(damageToFoe);
+			}
+			
+			
+		}
 		
-		if (player.chance(foe.getAvoid()))
-		{
-			if (!(player.getNoMiss() || foe.getNoAvoid()))
-				return 0;
-		}		
-		if (player.getIsPhysical())
-			finalDamage -= foe.getDefense();
-		if (player.getIsMagic())
-			finalDamage -= foe.getMagicDefense();
-		if (foe.getIsDefending())
-			finalDamage *= 0.5;
+		if (player.getIsDefending() ) {
+			player.defend(); //increases stamina level
+		}
 		
-		return finalDamage;
+		if (player.getUsingSkill1() ){
+			//knight - parry flag set to true
+			//mage - recovers 1/2 of max hp
+			//archer - sets focus counter to 6
+			//
+			player.useSkill1(); 
+		}
+		
+		if (player.getUsingSkill2()) {
+			//knight - deal 3.5 times damage to enemy and 10% chance to cause bleeding
+			//mage - deal 3 times damage to enemy and 20% chance to cause bleeding
+			//archer - deal 3 times damage to enemy
+			//
+			int damageToFoe = player.useSkill2();
+			
+			if (foe.getMagicShellCounter() != 0) {
+				int reducedDamage = (int) ((.5) * damageToFoe);
+				foe.subtractHp(reducedDamage);
+			} else {
+				foe.subtractHp(damageToFoe);
+			}
+		}
+		
+		if (player.getUsingSkill3()) {
+			//knight - cause berserk status on self for 7 turns
+			//mage - cause magic shell status on self (1/2 damage) for next 4 turns
+			//archer - 70% chance to cause bound on enemy
+			
+			player.useSkill3();
+		}
+		
+		if (player.getUsingSkill4()) {
+			//knight - deal 4.5 times damage to enemy and 70% chance to cause guard break on foe
+			//mage - deal 7 times damage to enemy and 30% chance to cause burn status on foe also causes 2 bound status effect on player (cannot be avoided)
+			//archer - deal 2.5 times damage with 10% chance to cause burn
+			//
+			int damageToFoe = player.useSkill4();
+			
+			if (foe.getMagicShellCounter() != 0) {
+				int reducedDamage = (int) ((.5) * damageToFoe);
+				foe.subtractHp(reducedDamage);
+			} else {
+				foe.subtractHp(damageToFoe);
+			}
+		}
+		
+		if (player.getBleedFlag()) {
+			foe.setBleedCounter(3);
+		}
+		
+		if (player.getBurnFlag()) {
+			foe.setBurnCounter(3);
+		}
+		
+		if (player.getBoundFlag()) {
+			foe.setBoundCounter(2);
+		}
+		
+		if (player.getGuardBreakFlag()) {
+			foe.setGuardBreakCounter(3);
+		}
+		
+		return foe;
+		
 	}
 	
 
