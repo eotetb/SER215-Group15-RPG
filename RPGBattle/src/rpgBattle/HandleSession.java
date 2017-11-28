@@ -52,6 +52,13 @@ public class HandleSession implements Runnable
 				player1Char = checkPlayers(player2Char,player1Char);
 			}
 			
+			player1Char = determineDefeat(player1Char);
+			player2Char = determineDefeat(player2Char);
+			
+			if (player1Char.getYouAreDefeated() && player2Char.getYouAreDefeated()) {
+				player1Char.setIsDraw(true);
+				player2Char.setIsDraw(true);
+			}
 			
 			
 			
@@ -152,6 +159,15 @@ public class HandleSession implements Runnable
 		
 		return foe;
 		
+	}
+	
+	public PlayerCharacter determineDefeat(PlayerCharacter p1) {
+		
+		if (p1.getCurrentHp() == 0) {
+			p1.setYouAreDefeated(true);
+		}
+	
+		return p1;
 	}
 	
 
