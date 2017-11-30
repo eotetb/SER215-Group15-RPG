@@ -30,7 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 
-public class Client {
+public class Client  {
 
 	JFrame frame2;
 	PlayerCharacter player;
@@ -38,22 +38,10 @@ public class Client {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private ObjectOutputStream toServer;
-	private ObjectInputStream fromServer;
+	
 	  
-	  
-		public void connectToServer(){ 
-			 try{
-			        Socket socket = new Socket("localhost", 8000);
-			        
-			       fromServer = new ObjectInputStream( socket.getInputStream());
-			       toServer =  new ObjectOutputStream(socket.getOutputStream());
-			      }
-			      catch (IOException ex) {
-			     System.err.println(ex);
-			      }
-			 
-		}
+
+		
 		
 	/**
 	 * Launch the application.
@@ -238,6 +226,7 @@ public class Client {
 		JLabel label_2 = new JLabel("STAM");
 		label_2.setBounds(394, 43, 41, 17);
 		frame2.getContentPane().add(label_2);
+		
 	
 	}
 
@@ -260,4 +249,5 @@ public class Client {
 		});
 	}
 }
+
 

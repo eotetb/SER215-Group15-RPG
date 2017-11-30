@@ -10,10 +10,15 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.UIManager;
-
+import java.io.*;
+import java.net.*;
 
 import java.awt.Canvas;
 import javax.swing.ImageIcon;
@@ -24,8 +29,33 @@ public class Menu extends PlayerCharacter{
 	private JFrame frame2;
 	private JLabel GameTitle;
 	private ClassType knight = ClassType.Knight;
+	private ObjectOutputStream toServer;
+	private ObjectInputStream fromServer;
+	 private boolean isStandAlone = false;
+	 private String host = "localhost";
   
   // IO streams
+	public void connectToServer(){ 
+		try {
+		      // Create a socket to connect to the server
+		      Socket socket;
+		        socket = new Socket( host, 7000);
+
+		      // Create an input stream to receive data from the server
+		      fromServer = new ObjectInputStream(socket.getInputStream());
+
+		      // Create an output stream to send data to the server
+		      toServer = new ObjectOutputStream(socket.getOutputStream());
+		    }
+		    catch (Exception ex) {
+		      System.err.println(ex);
+		    }
+
+		    // Control the game on a separate thread
+		    Thread thread = new Thread((Runnable) this);
+		    thread.start();
+		  }
+
  
   
   
@@ -38,6 +68,9 @@ public class Menu extends PlayerCharacter{
 				try {
 					Menu window = new Menu();
 					window.frame.setVisible(true);
+					Menu applet = new Menu();
+					window.isStandAlone = true;
+					 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -78,11 +111,13 @@ public class Menu extends PlayerCharacter{
 				
 				ClassType knight = ClassType.Knight;
 				PlayerCharacter player = new PlayerCharacter(knight);
+				Client window = new Client(player);
+				window.frame2.setVisible(true);  
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							Client window = new Client(player);
-							window.frame2.setVisible(true);
+							
+							connectToServer();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -99,11 +134,14 @@ public class Menu extends PlayerCharacter{
 				
 				ClassType archer = ClassType.Archer;
 				PlayerCharacter player = new PlayerCharacter(archer);
+				Client window = new Client(player);
+				window.frame2.setVisible(true);
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							Client window = new Client(player);
-							window.frame2.setVisible(true);
+							
+							
+							connectToServer();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -125,11 +163,14 @@ public class Menu extends PlayerCharacter{
 				
 				ClassType mage = ClassType.Mage;
 				PlayerCharacter player = new PlayerCharacter(mage);
+				Client window = new Client(player);
+				window.frame2.setVisible(true);
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							Client window = new Client(player);
-							window.frame2.setVisible(true);
+							
+							
+							connectToServer();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -159,6 +200,8 @@ public class Menu extends PlayerCharacter{
 		label_2.setIcon(new ImageIcon("mage.png"));
 		label_2.setBounds(313, 87, 121, 112);
 		frame.getContentPane().add(label_2);
+		
+		
 	}
 }
 
@@ -170,3 +213,4 @@ public class Menu extends PlayerCharacter{
 
   
   
+
