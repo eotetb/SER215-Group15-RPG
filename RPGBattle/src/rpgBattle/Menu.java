@@ -1,4 +1,4 @@
-package rpgBattle;
+//package rpgBattle;
 
 import java.awt.EventQueue;
 
