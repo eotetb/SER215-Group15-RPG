@@ -1,3 +1,5 @@
+package rpgBattle;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -30,7 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 
-public class Client  {
+public class Client implements Runnable {
 
 	JFrame frame2;
 	PlayerCharacter player;
@@ -38,10 +40,42 @@ public class Client  {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	
+	private ObjectOutputStream toServer;
+	private ObjectInputStream fromServer;
 	  
+	  
+	public void connectToServer()
+	{ 
+		 try
+		 {
+			 System.out.println("1");
+			 Socket socket = new Socket("localhost", 8000);
+			 System.out.println("1");
 
-		
+		     fromServer = new ObjectInputStream( socket.getInputStream());
+			 System.out.println("1");
+
+		     toServer =  new ObjectOutputStream(socket.getOutputStream());
+			 System.out.println("1");
+
+	     }
+		 catch (IOException ex) 
+		 {
+			 System.err.println(ex);
+	     }
+		 
+		// Thread thread = new Thread(this);
+		 //thread.start();
+	}
+	
+	public void run()
+	{
+		try
+		{
+			
+		}
+		catch (Exception ex) {}
+	}
 		
 	/**
 	 * Launch the application.
@@ -72,9 +106,12 @@ public class Client  {
 	/**
 	 * Create the application.
 	 */
-	public Client(PlayerCharacter x) {
-		player = x;
+	public Client(PlayerCharacter player) 
+	{
+		this.player = player;
 		initialize();
+		connectToServer();
+		frame2.repaint();
 	}
 
 	/**
@@ -227,7 +264,7 @@ public class Client  {
 		label_2.setBounds(394, 43, 41, 17);
 		frame2.getContentPane().add(label_2);
 		
-	
+		frame2.setVisible(true);
 	}
 
 
@@ -249,5 +286,4 @@ public class Client  {
 		});
 	}
 }
-
 
