@@ -38,7 +38,7 @@ public class HandleSession implements Runnable
 			
 			
 			while(true) {			
-				player2Char = (PlayerCharacter) fromPlayer1.readObject();
+				player2Char = (PlayerCharacter) fromPlayer2.readObject();
 				
 				if (player2Char.isInitialized()) {
 					break;
