@@ -1,34 +1,20 @@
-//package rpgBattle;
+package rpgBattle;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import javax.swing.UIManager;
-
-
-import java.awt.Canvas;
 import javax.swing.ImageIcon;
-
 
 public class Menu extends PlayerCharacter{
 	private JFrame frame;
-	private JFrame frame2;
 	private JLabel GameTitle;
-	private ClassType knight = ClassType.Knight;
-  
-  // IO streams
- 
-  
-  
+	
 	/**
 	 * Launch the application.
 	 */
@@ -58,6 +44,7 @@ public class Menu extends PlayerCharacter{
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("Fighter Game 2");
 		frame.getContentPane().setLayout(null);
 		
 		GameTitle = new JLabel("Fighter Game 2");
@@ -114,12 +101,6 @@ public class Menu extends PlayerCharacter{
 		frame.getContentPane().add(label_3);
 	}
 }
-
-
-
-
-    // Process events
-
 
   
   
