@@ -1,3 +1,5 @@
+package rpgBattle;
+
 import java.io.*;
 
 import java.net.*;
@@ -22,8 +24,8 @@ public class RPGServer extends JFrame
     add(scrollPane, BorderLayout.CENTER);
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setSize(300, 300);
-    setTitle("TicTacToeServer");
+    setSize(500, 300);
+    setTitle("Fighter Game 2 Server");
     setVisible(true);
 
     try {
@@ -130,60 +132,74 @@ class HandleSession extends PlayerCharacter implements Runnable, RPGConstants
 			
 		    while (true) {
 		    	//take in player 1 move
+		    	
 		        int moveSelected = fromPlayer1.readInt();
 		        switch(moveSelected)		        
 		        {
-		        case 1: player2HP = player2HP - 10;
-		        break;
-		        case 2: player1STAM = player1STAM + 20;
-		        break;
-		        case 3: player2HP = player2HP - 40;
-		        break;
-		        case 4: player1HP = player1HP + 40;
-		        break;
-		        case 5: player2HP = player2HP - 30;
-		        		player1HP = player1HP + 20;
-		        break;
-		        case 6: player2HP = player2HP - 200;
-		        break;
+		        case 1: 
+		        	player2HP = player2HP - 10;
+		        	break;
+		        case 2: 
+		        	player1STAM = player1STAM + 20;
+		        	break;
+		        case 3: 
+		        	player2HP = player2HP - 40;
+		        	break;
+		        case 4: 
+		        	player1HP = player1HP + 40;
+		        	break;
+		        case 5: 
+		        	player2HP = player2HP - 30;
+		        	player1HP = player1HP + 20;
+		        	break;
+		        case 6: 
+		        	player2HP = player2HP - 200;
+		        	break;
 		        default:
-		        break;
+		        	break;
 		        }
 		        
-		          // Notify player 2 to take the turn
-		          toPlayer2.writeInt(CONTINUE);
+	          // Notify player 2 to take the turn
+		      //toPlayer2.writeInt(CONTINUE);
 
-		          // Send player 1's selected row and column to player 2
-		          sendMove(toPlayer2, moveSelected);
-		          currentTurn++;
-		          
-		          // Receive a move from Player 2
-		           int moveSelected2 = fromPlayer2.readInt();
-			        switch(moveSelected2)		        
-			        {
-			        case 1: player1HP = player1HP - 10; //attack
-			        break;
-			        case 2: player2STAM = player2STAM + 20; //defend
-			        break;
-			        case 3: player1HP = player1HP - 40; //skill1
-			        break;
-			        case 4: player2HP = player2HP + 40; //skill2
-			        break;
-			        case 5: player1HP = player1HP - 30; //skill 3
-			        		player2HP = player2HP + 20;
-			        break;
-			        case 6: player1HP = player1HP - 200; //skill 4
-			        break;
-			        default:
-			        break;
-			        }
-		          // Notify player 1 to take the turn
-		          toPlayer1.writeInt(CONTINUE);
+	          // Send player 1's move to player 2.
+	          sendMove(toPlayer2, moveSelected);
+	          currentTurn++;
+	          
+	          // Receive a move from Player 2
+	           int moveSelected2 = fromPlayer2.readInt();
+		        switch(moveSelected2)		        
+		        {
+		        case 1: 
+		        	player1HP = player1HP - 10;
+		        	break;
+		        case 2: 
+		        	player2STAM = player2STAM + 20;
+		        	break;
+		        case 3: 
+		        	player1HP = player1HP - 40;
+		        	break;
+		        case 4: 
+		        	player2HP = player2HP + 40;
+		        	break;
+		        case 5: 
+		        	player1HP = player1HP - 30;
+		        	player2HP = player2HP + 20;
+		        	break;
+		        case 6: 
+		        	player1HP = player1HP - 200;
+		        	break;
+		        default:
+		        	break;
+		        }
+		       	  // Notify player 2 to take the turn
+		          //toPlayer1.writeInt(CONTINUE);
 
-		          // Send player 2's selected row and column to player 1
+		          // Send player 2's move to player 1.
 		          sendMove(toPlayer1, moveSelected2);
 		          
-		          System.out.println("P1 HP " + player1HP + " P2 HP " + player2HP);
+		          System.out.println(new Date() +
+		        		  " P1 HP " + player1HP + " P2 HP " + player2HP);
 		    }
 			
 			
