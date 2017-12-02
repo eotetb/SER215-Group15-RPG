@@ -1,32 +1,11 @@
 package rpgBattle;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.BorderLayout;
-import javax.swing.JMenu;
-import java.awt.FlowLayout;
-import java.awt.CardLayout;
 import java.awt.TextArea;
-import java.awt.TextField;
-import java.awt.Canvas;
-import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -40,13 +19,6 @@ public class Client implements Runnable,RPGConstants {
 	PlayerCharacter playerObj;
 	  // Indicate whether the player has the turn
 	private boolean myTurn = false;
-
-	  // Indicate the token for the player
-	private char myToken = ' ';
-
-	  // Indicate the token for the other player
-	private char otherToken = ' ';
-	
 	// Create and initialize a title label
 	private JLabel jlblTitle = new JLabel();
 	
@@ -104,8 +76,6 @@ public class Client implements Runnable,RPGConstants {
 
 		      // Am I player 1 or 2?
 		      if (player == PLAYER1) {
-		        myToken = '1';
-		        otherToken = '2';
 		        textArea.append("You are player 1.\n");
 		        textArea.append("Waiting for player 2 to join \n");
 
@@ -119,8 +89,6 @@ public class Client implements Runnable,RPGConstants {
 		        myTurn = true;
 		      }
 		      else if (player == PLAYER2) {
-		        myToken = '2';
-		        otherToken = '1';
 		        textArea.append("You are player 2.\n");
 		        textArea.append("Waiting for player 1 to move \n");
 		      }
@@ -164,8 +132,6 @@ public class Client implements Runnable,RPGConstants {
 	  private void receiveInfoFromServer() throws IOException 
 	  {
 	    // Receive game status
-		  //int status = fromServer.readInt(); 
-
 	      receiveMove();
 	      if (myHP <= 0)
 	      {
@@ -458,15 +424,16 @@ public class Client implements Runnable,RPGConstants {
 		textField_3.setColumns(10);
 		textField_3.setBounds(445, 40, 44, 20);
 		frame2.getContentPane().add(textField_3); //top right stamina 
+		textField_3.setVisible(false);
 		
 		JLabel lblStam = new JLabel("STAM");
 		lblStam.setBounds(8, 42, 40, 17);
 		frame2.getContentPane().add(lblStam);
-		
+		/*
 		JLabel label_2 = new JLabel("STAM");
 		label_2.setBounds(394, 43, 41, 17);
 		frame2.getContentPane().add(label_2);
-		
+		*/
 		jlblTitle = new JLabel("");
 		jlblTitle.setBounds(31, -24, 350, 23);
 		frame2.getContentPane().add(jlblTitle);
