@@ -1,4 +1,4 @@
-//package rpgBattle;
+package rpgBattle;
 
 import java.awt.EventQueue;
 
@@ -106,8 +106,7 @@ public class Client implements Runnable,RPGConstants {
 		      if (player == PLAYER1) {
 		        myToken = '1';
 		        otherToken = '2';
-		        System.out.println("test");
-		        textArea.append("Player 1 with token '1' \n");
+		        textArea.append("You are player 1.\n");
 		        textArea.append("Waiting for player 2 to join \n");
 
 		        // Receive startup notification from the server
@@ -122,7 +121,7 @@ public class Client implements Runnable,RPGConstants {
 		      else if (player == PLAYER2) {
 		        myToken = '2';
 		        otherToken = '1';
-		        textArea.append("Player 2 with token '2' \n");
+		        textArea.append("You are player 2.\n");
 		        textArea.append("Waiting for player 1 to move \n");
 		      }
 
@@ -144,10 +143,12 @@ public class Client implements Runnable,RPGConstants {
 		    }
 		  }
 		
-	  /** Wait for the player to mark a cell */
-	  private void waitForPlayerAction() throws InterruptedException {
-	    while (waiting) {
-	      Thread.sleep(100);
+	  /** Wait for the other player to attack 
+	 * @throws IOException */
+	  private void waitForPlayerAction() throws InterruptedException, IOException {
+	    while (waiting) 
+	    {
+	    	Thread.sleep(100);     
 	    }
 
 	    waiting = true;
@@ -160,46 +161,27 @@ public class Client implements Runnable,RPGConstants {
 	  }
 	  
 	  /** Receive info from the server */
-	  private void receiveInfoFromServer() throws IOException {
+	  private void receiveInfoFromServer() throws IOException 
+	  {
 	    // Receive game status
-		  int status = fromServer.readInt();
-		  //int status = 99;
-	    if (status == PLAYER1_WON) {
-	      // Player 1 won, stop playing
-	      continueToPlay = false;
-	      if (myToken == '1') {
-	    	  textArea.append("I won! (1)");
-	      }
-	      else if (myToken == 'O') {
-	    	  textArea.append("Player 1 (1) has won!");
-	        receiveMove();
-	      }
-	    }
-	    else if (status == PLAYER2_WON) {
-	      // Player 2 won, stop playing
-	      continueToPlay = false;
-	      if (myToken == '2') {
-	    	  textArea.append("I won! (O)");
-	      }
-	      else if (myToken == '1') {
-	    	  textArea.append("Player 2 (O) has won!");
-	        receiveMove();
-	      }
-	    }
-	    else if (status == DRAW) {
-	      // No winner, game is over
-	      continueToPlay = false;
-	      textArea.append("Game is over, no winner!");
+		  //int status = fromServer.readInt(); 
 
-	      if (myToken == '2') {
-	        receiveMove();
-	      }
-	    }
-	    else {
 	      receiveMove();
-	      textArea.append("My turn \n");
-	      myTurn = true; // It is my turn
-	    }
+	      if (myHP <= 0)
+	      {
+	    	  continueToPlay = false;
+	    	  textArea.append("I lost...");
+		  }
+	      else if (theirHP <= 0)
+	      {
+	    	  continueToPlay = false;
+	    	  textArea.append("I won!");
+		  }
+	      else
+	      {
+		      textArea.append("My turn \n");
+		      myTurn = true; // It is my turn
+	      }
 	  }
 	  
 	  private void receiveMove() throws IOException {
@@ -251,6 +233,7 @@ public class Client implements Runnable,RPGConstants {
 	private void initialize() {
 		frame2 = new JFrame();
 		frame2.setBounds(100, 100, 550, 500);
+		frame2.setTitle("Fighter Game 2");
 		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame2.getContentPane().setLayout(null);	
 		
@@ -264,22 +247,32 @@ public class Client implements Runnable,RPGConstants {
 		btnAttack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {		
 								
-		        if (myTurn) { //if it is my turn
+		        if (myTurn) 
+		        { 
+		        	//if it is my turn
 		        	textArea.append("You choose to attack \n");	            
 		            moveSelected = 1;
 		            theirHP = theirHP - 10;
 		            textField_1.setText(Integer.toString(theirHP));
-		            textArea.append("Waiting for the other player to move \n");
+		            if (theirHP <= 0)
+		  	    	{
+		            	continueToPlay = false;
+		            	textArea.append("I won!");
+		  	    	}
+		            else
+		            	textArea.append("Waiting for the other player to move \n");
 		            myTurn = false;
 		            waiting = false; // Just completed a successful move
-		          }
+		       }
 			}
 		});
 		
 		JButton btnDefend = new JButton("Defend");
 		btnDefend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-		        if (myTurn) { //if it is my turn
+		        if (myTurn) 
+		        { 
+		        	//if it is my turn
 		        	textArea.append("You choose to defend \n");	            
 		            moveSelected = 2;
 		            mySTAM = mySTAM + 20;
@@ -287,7 +280,7 @@ public class Client implements Runnable,RPGConstants {
 		            textArea.append("Waiting for the other player to move \n");
 		            myTurn = false;
 		            waiting = false; // Just completed a successful move
-		          }
+		        }
 			}
 		});
 		btnDefend.addActionListener(new ActionListener() {
@@ -309,7 +302,13 @@ public class Client implements Runnable,RPGConstants {
 		            textField_1.setText(Integer.toString(theirHP));
 		            mySTAM = mySTAM - 40;
 		            textField_2.setText(Integer.toString(mySTAM));
-		            textArea.append("Waiting for the other player to move \n");
+		            if (theirHP <= 0)
+		  	    	{
+		            	continueToPlay = false;
+		            	textArea.append("I won!");
+		  	    	}
+		            else
+		            	textArea.append("Waiting for the other player to move \n");
 		            myTurn = false;
 		            waiting = false; // Just completed a successful move
 		          }
@@ -362,7 +361,13 @@ public class Client implements Runnable,RPGConstants {
 		            textField_1.setText(Integer.toString(theirHP));
 		            mySTAM = mySTAM - 50;
 		            textField_2.setText(Integer.toString(mySTAM));
-		            textArea.append("Waiting for the other player to move \n");
+		            if (theirHP <= 0)
+		  	    	{
+		            	continueToPlay = false;
+		            	textArea.append("I won!");
+		  	    	}
+		            else
+		            	textArea.append("Waiting for the other player to move \n");
 		            myTurn = false;
 		            waiting = false; // Just completed a successful move
 		          }
@@ -386,7 +391,13 @@ public class Client implements Runnable,RPGConstants {
 		            textField_1.setText(Integer.toString(theirHP));
 		            mySTAM = mySTAM - 180;
 		            textField_2.setText(Integer.toString(mySTAM));
-		            textArea.append("Waiting for the other player to move \n");
+		            if (theirHP <= 0)
+		  	    	{
+		            	continueToPlay = false;
+		            	textArea.append("I won!");
+		  	    	}
+		            else
+		            	textArea.append("Waiting for the other player to move \n");
 		            myTurn = false;
 		            waiting = false; // Just completed a successful move
 		          }
@@ -396,7 +407,7 @@ public class Client implements Runnable,RPGConstants {
 		        }
 			}
 		});
-		String playerIcon = "knight.png";
+		String playerIcon = "img/knight.png";
 		switch(playerObj.getClassType())
 		{
 		case Knight:
@@ -463,4 +474,3 @@ public class Client implements Runnable,RPGConstants {
 		frame2.setVisible(true);
 	}
 }
-
